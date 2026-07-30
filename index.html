@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello World</title>
+    <title>Hello World - Interactive Experience</title>
     <style>
         :root {
             --bg-color: #ffffff;
@@ -12,6 +12,8 @@
             --button-text: #111111;
             --border-color: #dddddd;
             --icon-color: #111111;
+            --accent-color: #6366f1;
+            --particle-color: rgba(99, 102, 241, 0.5);
         }
 
         [data-theme="dark"] {
@@ -21,6 +23,8 @@
             --button-text: #f0f0f0;
             --border-color: #444444;
             --icon-color: #f0f0f0;
+            --accent-color: #818cf8;
+            --particle-color: rgba(129, 140, 248, 0.5);
         }
 
         * {
@@ -40,20 +44,210 @@
             justify-content: center;
             transition: background-color 0.3s ease, color 0.3s ease;
             padding: 20px;
+            overflow-x: hidden;
+            position: relative;
         }
 
+        /* Animated Background Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--particle-color);
+            border-radius: 50%;
+            animation: float 15s infinite;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing Effect on Title */
+        .glow-text {
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+            }
+            to {
+                text-shadow: 0 0 20px var(--accent-color), 0 0 30px var(--accent-color), 0 0 40px var(--accent-color);
+            }
+        }
+
+        /* Typing Animation */
+        .typing-container {
+            overflow: hidden;
+            border-right: 3px solid var(--accent-color);
+            white-space: nowrap;
+            animation: typing 3s steps(30, end), blink 0.75s step-end infinite;
+            max-width: fit-content;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink {
+            from, to { border-color: transparent }
+            50% { border-color: var(--accent-color) }
+        }
+
+        /* Interactive Buttons with Ripple Effect */
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            background: radial-gradient(circle, var(--accent-color) 0%, transparent 70%);
+            transform: scale(0);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: ripple 0.6s ease-out;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        /* Emoji Reaction Container */
+        .emoji-reactions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .emoji-btn {
+            font-size: 1.5rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            background: var(--button-bg);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .emoji-btn:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+
+        .emoji-btn.clicked {
+            animation: pop 0.3s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        /* Counter Display */
+        .counter-display {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* Fun Facts Section */
+        .fun-fact {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--button-bg), var(--bg-color));
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .fun-fact:hover {
+            transform: rotate(-1deg);
+        }
+
+        .fun-fact h3 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color);
+        }
+
+        /* Icons Section */
         .icons {
             display: flex;
             gap: 1.5rem;
             margin-bottom: 1.5rem;
             align-items: center;
+            z-index: 1;
         }
 
         .icons svg {
             width: 48px;
             height: 48px;
             fill: var(--icon-color);
-            transition: fill 0.3s ease;
+            transition: all 0.3s ease;
+        }
+
+        .icons svg:hover {
+            transform: scale(1.2) rotate(5deg);
         }
 
         .icon-label {
@@ -72,37 +266,42 @@
         h1 {
             font-size: 2.5rem;
             margin-bottom: 1rem;
+            z-index: 1;
         }
 
         p {
             font-size: 1.1rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             opacity: 0.85;
             text-align: center;
             max-width: 400px;
+            z-index: 1;
         }
 
-        button {
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background-color 0.2s ease, transform 0.1s ease;
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            max-width: 300px;
+            height: 8px;
+            background: var(--border-color);
+            border-radius: 4px;
+            margin-top: 1.5rem;
+            overflow: hidden;
         }
 
-        button:hover {
-            transform: translateY(-1px);
-        }
-
-        button:active {
-            transform: translateY(0);
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--accent-color), #818cf8);
+            border-radius: 4px;
+            transition: width 0.5s ease;
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="particles" id="particles"></div>
+
     <div class="icons">
         <div class="icon-item">
             <!-- Simple Grok-style icon (stylized G) -->
@@ -121,21 +320,45 @@
         </div>
     </div>
 
-    <h1>Hello World</h1>
-    <p>This is a simple Hello World web page with light & dark theme switch.</p>
-    <button id="theme-toggle" aria-label="Toggle light and dark theme">Switch to Dark Theme</button>
+    <h1 class="glow-text">Hello World</h1>
+    <p>Welcome to an interactive experience! Click around and explore.</p>
+    
+    <div class="btn-group">
+        <button id="theme-toggle" aria-label="Toggle light and dark theme">🌙 Switch to Dark Theme</button>
+        <button id="confetti-btn" aria-label="Launch confetti">🎉 Celebrate!</button>
+        <button id="fact-btn" aria-label="Get a fun fact">💡 Fun Fact</button>
+    </div>
+
+    <div class="emoji-reactions" id="emoji-reactions">
+        <button class="emoji-btn" data-emoji="👍">👍</button>
+        <button class="emoji-btn" data-emoji="❤️">❤️</button>
+        <button class="emoji-btn" data-emoji="😂">😂</button>
+        <button class="emoji-btn" data-emoji="🎉">🎉</button>
+        <button class="emoji-btn" data-emoji="🚀">🚀</button>
+    </div>
+
+    <div class="counter-display" id="counter-display">Total Reactions: 0</div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+
+    <div class="fun-fact" id="fun-fact" style="display: none;">
+        <h3>Did You Know?</h3>
+        <p id="fact-text"></p>
+    </div>
 
     <script>
+        // Theme Toggle
         const toggleButton = document.getElementById("theme-toggle");
         const html = document.documentElement;
 
-        // Check saved preference or system preference
         const savedTheme = localStorage.getItem("theme");
         const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
         if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
             html.setAttribute("data-theme", "dark");
-            toggleButton.textContent = "Switch to Light Theme";
+            toggleButton.textContent = "☀️ Switch to Light Theme";
         }
 
         toggleButton.addEventListener("click", () => {
@@ -143,12 +366,158 @@
             if (currentTheme === "dark") {
                 html.removeAttribute("data-theme");
                 localStorage.setItem("theme", "light");
-                toggleButton.textContent = "Switch to Dark Theme";
+                toggleButton.textContent = "🌙 Switch to Dark Theme";
             } else {
                 html.setAttribute("data-theme", "dark");
                 localStorage.setItem("theme", "dark");
-                toggleButton.textContent = "Switch to Light Theme";
+                toggleButton.textContent = "☀️ Switch to Light Theme";
             }
+            createRipple(event);
+        });
+
+        // Create Particles
+        function createParticles() {
+            const particlesContainer = document.getElementById("particles");
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement("div");
+                particle.className = "particle";
+                particle.style.left = Math.random() * 100 + "%";
+                particle.style.animationDelay = Math.random() * 15 + "s";
+                particle.style.animationDuration = (Math.random() * 10 + 10) + "s";
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Ripple Effect
+        function createRipple(event) {
+            const button = event.currentTarget;
+            const ripple = document.createElement("span");
+            const rect = button.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = event.clientX - rect.left - size / 2;
+            const y = event.clientY - rect.top - size / 2;
+            
+            ripple.style.width = ripple.style.height = size + "px";
+            ripple.style.left = x + "px";
+            ripple.style.top = y + "px";
+            ripple.classList.add("ripple");
+            
+            button.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        }
+
+        // Emoji Reactions
+        let reactionCount = 0;
+        const emojiButtons = document.querySelectorAll(".emoji-btn");
+        const counterDisplay = document.getElementById("counter-display");
+        const progressBar = document.getElementById("progress-bar");
+
+        emojiButtons.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                reactionCount++;
+                counterDisplay.textContent = `Total Reactions: ${reactionCount}`;
+                
+                // Update progress bar
+                const progress = Math.min((reactionCount % 10) * 10, 100);
+                progressBar.style.width = progress + "%";
+                
+                // Add click animation
+                btn.classList.add("clicked");
+                setTimeout(() => btn.classList.remove("clicked"), 300);
+                
+                createRipple(e);
+            });
+        });
+
+        // Confetti Effect
+        const confettiBtn = document.getElementById("confetti-btn");
+        confettiBtn.addEventListener("click", (e) => {
+            createRipple(e);
+            launchConfetti();
+        });
+
+        function launchConfetti() {
+            const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#ff00ff", "#00ffff"];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement("div");
+                confetti.style.position = "fixed";
+                confetti.style.width = "10px";
+                confetti.style.height = "10px";
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = "50%";
+                confetti.style.top = "50%";
+                confetti.style.borderRadius = Math.random() > 0.5 ? "50%" : "0";
+                confetti.style.pointerEvents = "none";
+                confetti.style.zIndex = "9999";
+                
+                document.body.appendChild(confetti);
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 200 + 100;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+                
+                let posX = window.innerWidth / 2;
+                let posY = window.innerHeight / 2;
+                let velX = vx;
+                let velY = vy;
+                let gravity = 0.5;
+                let opacity = 1;
+                
+                function animate() {
+                    velY += gravity;
+                    posX += velX * 0.016;
+                    posY += velY * 0.016;
+                    opacity -= 0.02;
+                    
+                    confetti.style.left = posX + "px";
+                    confetti.style.top = posY + "px";
+                    confetti.style.opacity = opacity;
+                    
+                    if (opacity > 0) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.remove();
+                    }
+                }
+                
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // Fun Facts
+        const facts = [
+            "The first computer programmer was Ada Lovelace in the 1840s!",
+            "Hello World programs have been written in over 2,500 programming languages.",
+            "The average person blinks about 15-20 times per minute.",
+            "Octopuses have three hearts and blue blood!",
+            "Honey never spoils - archaeologists found edible honey in Egyptian tombs!",
+            "A group of flamingos is called a 'flamboyance'.",
+            "The shortest war in history lasted only 38 minutes!",
+            "Bananas are berries, but strawberries aren't!"
+        ];
+
+        const factBtn = document.getElementById("fact-btn");
+        const funFactDiv = document.getElementById("fun-fact");
+        const factText = document.getElementById("fact-text");
+
+        factBtn.addEventListener("click", (e) => {
+            createRipple(e);
+            const randomFact = facts[Math.floor(Math.random() * facts.length)];
+            factText.textContent = randomFact;
+            funFactDiv.style.display = "block";
+            funFactDiv.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+
+        // Button click sound effect (optional, muted by default)
+        document.querySelectorAll("button").forEach(btn => {
+            btn.addEventListener("mouseenter", () => {
+                btn.style.transform = "translateY(-2px) scale(1.02)";
+            });
+            btn.addEventListener("mouseleave", () => {
+                btn.style.transform = "translateY(0) scale(1)";
+            });
         });
     </script>
 </body>
