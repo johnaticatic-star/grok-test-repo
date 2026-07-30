@@ -4,9 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello World</title>
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #111111;
+            --button-bg: #f0f0f0;
+            --button-text: #111111;
+            --border-color: #dddddd;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #f0f0f0;
+            --button-bg: #333333;
+            --button-text: #f0f0f0;
+            --border-color: #444444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.85;
+        }
+
+        button {
+            background-color: var(--button-bg);
+            color: var(--button-text);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+    </style>
 </head>
 <body>
     <h1>Hello World</h1>
-    <p>This is a simple Hello World web page.</p>
+    <p>This is a simple Hello World web page with light & dark theme switch.</p>
+    <button id="theme-toggle" aria-label="Toggle light and dark theme">Switch to Dark Theme</button>
+
+    <script>
+        const toggleButton = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+
+        // Check saved preference or system preference
+        const savedTheme = localStorage.getItem("theme");
+        const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
+            html.setAttribute("data-theme", "dark");
+            toggleButton.textContent = "Switch to Light Theme";
+        }
+
+        toggleButton.addEventListener("click", () => {
+            const currentTheme = html.getAttribute("data-theme");
+            if (currentTheme === "dark") {
+                html.removeAttribute("data-theme");
+                localStorage.setItem("theme", "light");
+                toggleButton.textContent = "Switch to Dark Theme";
+            } else {
+                html.setAttribute("data-theme", "dark");
+                localStorage.setItem("theme", "dark");
+                toggleButton.textContent = "Switch to Light Theme";
+            }
+        });
+    </script>
 </body>
 </html>
